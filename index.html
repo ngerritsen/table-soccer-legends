@@ -21,12 +21,16 @@
       </div>
     </section>
     <section class="section">
-        <div class="container">
-          {{ message }}
+        <div class="container content">
+          <h3>Players:</h3>
+          <ul>
+            <li v-for="player in players">{{ player.name }} ({{ player.id }})</li>
+          </ul>
         </div>
     </section>
   </div>
-  <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script src="main.js"></script>

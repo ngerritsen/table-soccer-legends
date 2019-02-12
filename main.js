@@ -2,10 +2,13 @@ const app = new Vue({
   el: '#app',
   created() {
     initFirebase();
-    getPlayers();
+    getPlayers()
+      .then(players => {
+        this.players = players;
+      });
   },
   data: {
-    message: 'Hello Vue!'
+    players: []
   }
 });
 
@@ -21,9 +24,18 @@ function initFirebase() {
 }
 
 function getPlayers() {
-  firebase.database()
-    .ref('players')
-    .orderByKey()
-    .once('value')
-    .then(console.log);
+  return firebase.firestore()
+    .collection('players')
+    .get()
+    .then((querySnapshot) => {
+      const docs = [];
+
+      querySnapshot.forEach(doc => {
+        docs.push(Object.assign(doc.data(), {
+          id: doc.id
+        }))
+      });
+
+      return docs;
+    });
 }
