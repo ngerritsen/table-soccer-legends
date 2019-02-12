@@ -1,0 +1,19 @@
+{
+  "name": "@coolblue/table-soccer-legends",
+  "version": "1.0.0",
+  "description": "Ranked table soccer",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngerritsen/table-soccer-legends.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngerritsen/table-soccer-legends/issues"
+  },
+  "homepage": "https://github.com/ngerritsen/table-soccer-legends#readme"
+}
