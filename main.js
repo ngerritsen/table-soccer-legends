@@ -8,12 +8,23 @@ const app = new Vue({
       });
   },
   methods: {
-    addMatch() {
-
+    addMatch(event) {
+      event.preventDefault();
     }
   },
   data: {
     players: [],
+    matchInput: {
+      teams: {
+        0: [],
+        1: []
+      },
+      rounds: {
+        0: [],
+        1: [],
+        2: []
+      }
+    },
     ranks: [
       { name: 'Gold', color: 'warning' },
       { name: 'Silver', color: 'grey-light' },

@@ -25,29 +25,41 @@
         </div>
       </div>
     </section>
+
     <section class="section">
       <div class="container">
         <div class="columns">
           <div class="column">
             <h2 class="title is-size-4">Add match</h2>
             <form @submit="addMatch">
-              <div v-for="teamId in [1, 2]" class="field">
-                <label class="label">Team {{ teamId }}</label>
+              <div v-for="teamId in [0, 1]" class="field">
+                <label class="label">Team {{ teamId + 1 }}</label>
                 <div class="field is-grouped">
-                  <div class="control" v-for="playerSlot in [1, 2]">
-                    <div class="select">
-                      <select>
+                  <div class="control is-expanded" v-for="playerSlot in [0, 1]">
+                    <div class="select is-fullwidth">
+                      <select v-model="matchInput.teams[teamId][playerSlot]">
+                        <option>-</option>
                         <option v-for="player in players" :value="player.id">{{ player.name }}</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div class="field">
-                <div class="control">
-                  <input type="submit" value="Submit" class="button is-info">
+                <label class="label">Rounds <small class="has-text-grey">(team 1 - team 2)</small></label>
+                <div class="field is-grouped" v-for="round in [0, 1, 2]">
+                  <div class="control is-expanded" v-for="teamId in [0, 1]">
+                    <input class="input is-fullwidth" v-model="matchInput.rounds[round][teamId]" type="number"/>
+                  </div>
                 </div>
-              </div>
+            </div>
+
+              <div class="field">
+                  <div class="control">
+                    <button type="submit" class="button is-info">Submit</button>
+                  </div>
+                </div>
             </form>
           </div>
 
