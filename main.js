@@ -7,8 +7,18 @@ const app = new Vue({
         this.players = players;
       });
   },
+  methods: {
+    addMatch() {
+
+    }
+  },
   data: {
-    players: []
+    players: [],
+    ranks: [
+      { name: 'Gold', color: 'warning' },
+      { name: 'Silver', color: 'grey-light' },
+      { name: 'Bronze', color: 'bronze' }
+    ]
   }
 });
 

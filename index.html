@@ -3,6 +3,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Table Soccer Legends</title>
+  <style>
+    .has-text-bronze {
+      color: #a56729;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -21,12 +26,43 @@
       </div>
     </section>
     <section class="section">
-        <div class="container content">
-          <h3>Players:</h3>
-          <ul>
-            <li v-for="player in players">{{ player.name }} ({{ player.id }})</li>
-          </ul>
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <h2 class="title is-size-4">Add match</h2>
+            <form @submit="addMatch">
+              <div v-for="teamId in [1, 2]" class="field">
+                <label class="label">Team {{ teamId }}</label>
+                <div class="field is-grouped">
+                  <div class="control" v-for="playerSlot in [1, 2]">
+                    <div class="select">
+                      <select>
+                        <option v-for="player in players" :value="player.id">{{ player.name }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input type="submit" value="Submit" class="button is-info">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="column">
+            <h2 class="title is-size-4">Ranks</h2>
+            <div class="content">
+              <p v-for="rank in ranks">
+                <span :class="'icon has-text-' + rank.color">
+                  <i class="fas fa-medal"></i>
+                </span> {{ rank.name }}
+              </div>
+            </p>
+          </div>
         </div>
+      </div>
     </section>
   </div>
   <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
