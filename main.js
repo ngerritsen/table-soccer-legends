@@ -18,3 +18,7 @@ function initFirebase() {
     messagingSenderId: "225126533819"
   });
 }
+
+function getPlayers() {
+  
+}
