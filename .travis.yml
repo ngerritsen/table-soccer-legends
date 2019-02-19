@@ -1,4 +1,6 @@
 language: node_js
+build:
+  - npm run build
 after_success:
-  - zip table-soccer-legends.zip index.html bg.jpg main.js
+  - zip table-soccer-legends.zip index.html *.js *.jpg
   - "curl -F 'data=@table-soccer-legends.zip' -H 'X-Key: '$DEPLOY_KEY -H 'X-ExtractTo: nielsgerritsen/table-soccer-legends' https://carehr.nl/deploy/"

@@ -1,45 +1,39 @@
-(() => {
-  const { numericObjectToArray, arrayToNumericObject, getDocsWithIds } = window.utils;
+import firebase from './firebase';
+import { numericObjectToArray, arrayToNumericObject, getDocsWithIds } from './utils';
 
-  function parseStoredMatch(storedMatch, players) {
-    return {
-      id: storedMatch.id,
-      date: storedMatch.date.toDate(),
-      teams: numericObjectToArray(storedMatch.teams)
-        .map(playerIds => playerIds
-          .map(id =>
-            players.find(player => player.id === id)
-          )
-        ),
-      rounds: numericObjectToArray(storedMatch.rounds)
-    };
-  }
+export function saveMatch(match) {
+  return firebase.firestore()
+    .collection('matches')
+    .add(prepareMatchForStorage(match));
+}
 
-  function prepareMatchForStorage(match) {
-    return {
-      date: new Date(),
-      teams: arrayToNumericObject(match.teams),
-      rounds: arrayToNumericObject(match.rounds)
-    };
-  }
+export function getMatches(players) {
+  return firebase.firestore()
+    .collection('matches')
+    .orderBy('date', 'desc')
+    .get()
+    .then(getDocsWithIds)
+    .then(matches => matches.map(storedMatch => parseStoredMatch(storedMatch, players)));
+}
 
-  function saveMatch(match) {
-    return firebase.firestore()
-      .collection('matches')
-      .add(prepareMatchForStorage(match));
-  }
-
-  function getMatches(players) {
-    return firebase.firestore()
-      .collection('matches')
-      .orderBy('date')
-      .get()
-      .then(getDocsWithIds)
-      .then(matches => matches.map(storedMatch => parseStoredMatch(storedMatch, players)));
-  }
-
-  window.matchRepository = {
-    saveMatch,
-    getMatches
+function parseStoredMatch(storedMatch, players) {
+  return {
+    id: storedMatch.id,
+    date: storedMatch.date.toDate(),
+    teams: numericObjectToArray(storedMatch.teams)
+      .map(playerIds => playerIds
+        .map(id =>
+          players.find(player => player.id === id)
+        )
+      ),
+    rounds: numericObjectToArray(storedMatch.rounds)
   };
-})();
+}
+
+function prepareMatchForStorage(match) {
+  return {
+    date: new Date(),
+    teams: arrayToNumericObject(match.teams),
+    rounds: arrayToNumericObject(match.rounds)
+  };
+}

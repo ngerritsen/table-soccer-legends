@@ -1,15 +1,10 @@
-(() => {
-  const { getDocsWithIds } = window.utils;
+import firebase from './firebase';
+import { getDocsWithIds } from './utils';
 
-  function getPlayers() {
-    return firebase.firestore()
-      .collection('players')
-      .orderBy('name')
-      .get()
-      .then(getDocsWithIds);
-  }
-
-  window.playerRepository = {
-    getPlayers
-  };
-})();
+export function getPlayers() {
+  return firebase.firestore()
+    .collection('players')
+    .orderBy('name')
+    .get()
+    .then(getDocsWithIds);
+}
