@@ -126,6 +126,7 @@
               <table class="table is-fullwidth is-striped">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Player</th>
                     <th>Rank</th>
                     <th>Elo</th>
@@ -134,7 +135,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="playerWithStats in playersWithStats">
+                  <tr v-for="(playerWithStats, index) in playersWithStats">
+                    <td><strong>{{ index + 1 }}.</strong></td>
                     <td>{{ playerWithStats.name }}</td>
                     <td>
                       <img
@@ -169,10 +171,10 @@
             </thead>
             <tbody>
               <tr v-for="match in matchHistory">
-                <td v-for="teamId in [0, 1]">{{ match.teams[teamId].join(' & ') }}</td>
+                <td v-for="teamId in [0, 1]">{{ match.teams[teamId].join(', ') }}</td>
                 <td><strong>{{ match.result.join(' - ') }}</strong></td>
                 <td v-for="round in [0, 1, 2]">{{ (match.rounds[round] || []).join(' - ') }}</td>
-                <td>{{ match.date.toLocaleString() }}</td>
+                <td><i>{{ match.date.toLocaleString() }}</i></td>
               </tr>
             </tbody>
           </table>
