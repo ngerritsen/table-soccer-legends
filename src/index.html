@@ -11,11 +11,36 @@
     [v-cloak] {
       display: none;
     }
+
+    .rank-icon {
+      height: 22px;
+      width: auto;
+      border-radius: 3px;
+      border: 1px solid #222;
+    }
+
+    .rank-icon--inline {
+      margin-right: 12px;
+      position: relative;
+      top: 6px;
+    }
+
+    @media (min-width: 640px) {
+      .ranks {
+        column-count: 2;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .ranks {
+        column-count: 3;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="app">
-    <section class="hero is-medium is-dark" style="background-image: url(bg.jpg); background-position: center;" v-once>
+    <section class="hero is-medium is-dark" style="background-image: url(img/bg.jpg); background-position: center;" v-once>
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
@@ -40,7 +65,7 @@
       <section class="section">
         <div class="container">
           <div class="columns">
-            <div class="column">
+            <div class="column is-5">
               <h2 class="title is-size-4">Add match</h2>
               <div class="notification is-danger" v-if="errors.length > 0">
                 <ul>
@@ -83,15 +108,26 @@
               </form>
             </div>
 
-            <div class="column">
-              <h2 class="title is-size-4">Ranks</h2>
-              <div class="content">
-                <p v-for="rank in ranks">
-                  <span :class="'icon has-text-' + rank.color">
-                    <i class="fas fa-medal"></i>
-                  </span> {{ rank.name }}
-                </p>
-              </div>
+            <div class="column is-7">
+              <h2 class="title is-size-4">Rankings</h2>
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                  <tr>
+                    <th>Player</th>
+                    <th>Rank</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="player in players">
+                    <td>{{ player.name }}</td>
+                    <td><img class="rank-icon" :src="ranks[0].icon" :alt="ranks[0].name"></td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -117,6 +153,19 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="title is-size-4">Ranks</h2>
+          <div class="content">
+            <div class="ranks">
+              <p v-for="rank in ranks">
+                <img class="rank-icon rank-icon--inline" :src="rank.icon" :alt="rank.name"> {{ rank.name }}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-free/js/all';
 import { unique, flattenArray, numericObjectToArray } from './utils';
 import * as playerRepository from './playerRepository';
 import * as matchRepository from './matchRepository';
+import ranks from './ranks';
 
 new Vue({
   el: '#app',
@@ -14,21 +15,10 @@ new Vue({
     success: '',
     matches: [],
     matchInput: {
-      teams: {
-        0: [],
-        1: []
-      },
-      rounds: {
-        0: [],
-        1: [],
-        2: []
-      }
+      teams: { 0: [], 1: [] },
+      rounds: { 0: [], 1: [], 2: [] }
     },
-    ranks: [
-      { name: 'Gold', color: 'warning' },
-      { name: 'Silver', color: 'grey-light' },
-      { name: 'Bronze', color: 'bronze' }
-    ]
+    ranks
   },
   created() {
     this.loadMatches();
