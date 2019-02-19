@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import '@fortawesome/fontawesome-free/js/all';
 
-import { unique, flattenArray, numericObjectToArray } from './utils';
-import * as playerRepository from './playerRepository';
-import * as matchRepository from './matchRepository';
+import * as playersRepository from './repositories/players';
+import * as matchesRepository from './repositories/matches';
+import { getMatchHistory, parseMatchInput } from './utils/match';
+import { getPlayersWithStats } from './utils/stats';
 import ranks from './ranks';
+import { validateMatch } from './validation';
 
 new Vue({
   el: '#app',
@@ -25,15 +27,12 @@ new Vue({
   },
   methods: {
     loadMatches() {
-      playerRepository.getPlayers()
-      .then(players => {
-        this.players = players;
-        return matchRepository.getMatches(players);
-      })
-      .then(matches => {
-        this.matches = matches;
-        this.loading = false;
-      });
+      Promise.all([playersRepository.getPlayers(), matchesRepository.getMatches()])
+        .then(([players, matches]) => {
+          this.players = players;
+          this.matches = matches;
+          this.loading = false;
+        });
     },
     saveMatch(event) {
       event.preventDefault();
@@ -43,17 +42,17 @@ new Vue({
       
       if (errors.length > 0) {
         this.errors = errors;
+        return;
       }
 
       this.errors = [];
 
-      matchRepository.saveMatch(match)
+      matchesRepository.saveMatch(match)
         .then(() => {
           resetNumericObjectInputs(this.matchInput.teams);
           resetNumericObjectInputs(this.matchInput.rounds);
 
           this.success = 'Saved match!';
-
           setTimeout(() => { this.success = '' }, 5000);
 
           this.loadMatches();
@@ -62,34 +61,16 @@ new Vue({
           this.errors = ['Failed to save match.'];
         });
     }
+  },
+  computed: {
+    playersWithStats() {
+      return getPlayersWithStats(this.matches, this.players);
+    },
+    matchHistory() {
+      return getMatchHistory(this.matches, this.players);
+    }
   }
 });
-
-function validateMatch(match) {
-  const errors = [];
-
-  if (unique(flattenArray(match.teams)).length !== 4) {
-    errors.push('Teams are not complete, select 2 unique players per team.');
-  }
-
-  if (match.rounds.length < 1) {
-    errors.push('Enter a minimum of 1 round.');
-  }
-
-  return errors;
-}
-
-function parseMatchInput(matchInput) {
-  const teams = numericObjectToArray(matchInput.teams)
-    .filter(players => players.length === 2);
-
-  const rounds = numericObjectToArray(matchInput.rounds)
-    .map(scores => scores.filter(Boolean))
-    .filter(scores => scores.length === 2)
-    .map(scores => scores.map(Number));
-
-  return { rounds, teams };
-}
 
 function resetNumericObjectInputs(inputs) {
   Object.keys(inputs).forEach(key => inputs[key] = []);
