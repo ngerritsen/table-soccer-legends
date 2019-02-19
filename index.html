@@ -7,11 +7,15 @@
     .has-text-bronze {
       color: #a56729;
     }
+
+    [v-cloak] {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div id="app">
-    <section class="hero is-medium is-dark" style="background-image: url(bg.jpg); background-position: center;">
+    <section class="hero is-medium is-dark" style="background-image: url(bg.jpg); background-position: center;" v-once>
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
@@ -19,67 +23,112 @@
               <i class="fas fa-sm fa-trophy"></i>
             </span> &nbsp; Table Soccer Legends
           </h1>
-          <h2 class="subtitle">
-            Don't tilt, just play.
-          </h2>
+          <h2 class="subtitle">Don't tilt, just play.</h2>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="columns">
-          <div class="column">
-            <h2 class="title is-size-4">Add match</h2>
-            <form @submit="addMatch">
-              <div v-for="teamId in [0, 1]" class="field">
-                <label class="label">Team {{ teamId + 1 }}</label>
-                <div class="field is-grouped">
-                  <div class="control is-expanded" v-for="playerSlot in [0, 1]">
-                    <div class="select is-fullwidth">
-                      <select v-model="matchInput.teams[teamId][playerSlot]">
-                        <option>-</option>
-                        <option v-for="player in players" :value="player.id">{{ player.name }}</option>
-                      </select>
+    <div v-show="loading" class="section">
+      <div class="container has-text-centered">
+          <span class="icon is-large has-text-info">
+              <i class="fa fa-2x fa-circle-notch fa-spin"></i>
+            </span>
+      </div>
+    </div>
+
+    <div v-show="!loading" v-cloak>
+      <section class="section">
+        <div class="container">
+          <div class="columns">
+            <div class="column">
+              <h2 class="title is-size-4">Add match</h2>
+              <div class="notification is-danger" v-if="errors.length > 0">
+                <ul>
+                  <li v-for="error in errors">{{ error }}</li>
+                </ul>
+              </div>
+
+              <div class="notification is-success" v-if="success.length > 0">
+                {{ success }}
+              </div>
+              <form @submit="saveMatch">
+                <div v-for="teamId in [0, 1]" class="field">
+                  <label class="label">Team {{ teamId + 1 }}</label>
+                  <div class="field is-grouped">
+                    <div class="control is-expanded" v-for="playerSlot in [0, 1]">
+                      <div class="select is-fullwidth">
+                        <select v-model="matchInput.teams[teamId][playerSlot]">
+                          <option>-</option>
+                          <option v-for="player in players" :value="player.id">{{ player.name }}</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <div class="field">
+                  <label class="label">Rounds <small class="has-text-grey">(team 1 - team 2)</small></label>
+                  <div class="field is-grouped" v-for="round in [0, 1, 2]">
+                    <div class="control is-expanded" v-for="teamId in [0, 1]">
+                      <input class="input is-fullwidth" v-model="matchInput.rounds[round][teamId]" type="number"/>
+                    </div>
+                  </div>
               </div>
 
-              <div class="field">
-                <label class="label">Rounds <small class="has-text-grey">(team 1 - team 2)</small></label>
-                <div class="field is-grouped" v-for="round in [0, 1, 2]">
-                  <div class="control is-expanded" v-for="teamId in [0, 1]">
-                    <input class="input is-fullwidth" v-model="matchInput.rounds[round][teamId]" type="number"/>
+                <div class="field">
+                    <div class="control">
+                      <button type="submit" class="button is-info">Submit</button>
+                    </div>
                   </div>
-                </div>
+              </form>
             </div>
 
-              <div class="field">
-                  <div class="control">
-                    <button type="submit" class="button is-info">Submit</button>
-                  </div>
-                </div>
-            </form>
-          </div>
-
-          <div class="column">
-            <h2 class="title is-size-4">Ranks</h2>
-            <div class="content">
-              <p v-for="rank in ranks">
-                <span :class="'icon has-text-' + rank.color">
-                  <i class="fas fa-medal"></i>
-                </span> {{ rank.name }}
+            <div class="column">
+              <h2 class="title is-size-4">Ranks</h2>
+              <div class="content">
+                <p v-for="rank in ranks">
+                  <span :class="'icon has-text-' + rank.color">
+                    <i class="fas fa-medal"></i>
+                  </span> {{ rank.name }}
+                </p>
               </div>
-            </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="title is-size-4">Match history</h2>
+
+          <table class="table is-striped is-fullwidth">
+            <thead>
+              <tr>
+                <th v-for="teamId in [0, 1]">Team {{ teamId + 1 }}</th>
+                <th v-for="round in [0, 1, 2]">Round {{ round + 1 }}</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="match in matches">
+                <td v-for="teamId in [0, 1]">{{ match.teams[teamId].map(p => p.name).join(', ') }}</td>
+                <td v-for="round in [0, 1, 2]">{{ (match.rounds[round] || []).join(' - ') }}</td>
+                <td>{{ match.date.toLocaleString() }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </div>
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="main.js"></script>
+  <script src="src/utils.js"></script>
+  <script src="src/initFirebase.js"></script>
+  <script src="src/playerRepository.js"></script>
+  <script src="src/matchRepository.js"></script>
+  <script src="src/main.js"></script>
 </body>
