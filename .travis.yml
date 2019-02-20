@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "8"
 build:
+  - npm run test
   - npm run build
 after_success:
   - zip table-soccer-legends.zip index.html *.js *.jpg

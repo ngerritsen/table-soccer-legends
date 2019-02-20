@@ -27,19 +27,21 @@ new Vue({
   },
   methods: {
     loadMatches() {
-      Promise.all([playersRepository.getPlayers(), matchesRepository.getMatches()])
-        .then(([players, matches]) => {
-          this.players = players;
-          this.matches = matches;
-          this.loading = false;
-        });
+      Promise.all([
+        playersRepository.getPlayers(),
+        matchesRepository.getMatches()
+      ]).then(([players, matches]) => {
+        this.players = players;
+        this.matches = matches;
+        this.loading = false;
+      });
     },
     saveMatch(event) {
       event.preventDefault();
 
       const match = parseMatchInput(this.matchInput);
       const errors = validateMatch(match);
-      
+
       if (errors.length > 0) {
         this.errors = errors;
         return;
@@ -47,17 +49,20 @@ new Vue({
 
       this.errors = [];
 
-      matchesRepository.saveMatch(match)
+      matchesRepository
+        .saveMatch(match)
         .then(() => {
           resetNumericObjectInputs(this.matchInput.teams);
           resetNumericObjectInputs(this.matchInput.rounds);
 
           this.success = 'Saved match!';
-          setTimeout(() => { this.success = '' }, 5000);
+          setTimeout(() => {
+            this.success = '';
+          }, 5000);
 
           this.loadMatches();
         })
-        .catch((error) => {
+        .catch(() => {
           this.errors = ['Failed to save match.'];
         });
     }
@@ -73,5 +78,5 @@ new Vue({
 });
 
 function resetNumericObjectInputs(inputs) {
-  Object.keys(inputs).forEach(key => inputs[key] = []);
+  Object.keys(inputs).forEach(key => (inputs[key] = []));
 }
