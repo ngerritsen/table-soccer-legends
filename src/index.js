@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import '@fortawesome/fontawesome-free/js/all';
+import Vue from 'vue/dist/vue.js';
 
+import './style.scss';
 import * as playersRepository from './repositories/players';
 import * as matchesRepository from './repositories/matches';
 import { getMatchHistory, parseMatchInput } from './utils/match';

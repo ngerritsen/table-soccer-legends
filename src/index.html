@@ -1,52 +1,9 @@
 <!DOCTYPE html>
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
   <title>Table Soccer Legends</title>
-  <style>
-    .has-text-bronze {
-      color: #a56729;
-    }
-
-    [v-cloak] {
-      display: none;
-    }
-
-    .rank-icon {
-      height: 22px;
-      width: auto;
-      border-radius: 3px;
-      border: 1px solid #222;
-    }
-
-    .rank-icon--inline {
-      margin-right: 12px;
-      position: relative;
-      top: 6px;
-    }
-
-    .loader-container {
-      padding-top: 12%;
-    }
-
-    .rank {
-      margin-bottom: 8px;
-    }
-
-    @media (min-width: 640px) {
-      .ranks {
-        column-count: 2;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .ranks {
-        column-count: 3;
-      }
-    }
-  </style>
 </head>
 <body>
   <div id="app">
@@ -66,7 +23,7 @@
     <div v-show="loading" class="section">
       <div class="container loader-container has-text-centered">
           <span class="icon is-large has-text-info">
-              <i class="fa fa-2x fa-circle-notch fa-spin"></i>
+              <i class="fas fa-2x fa-circle-notch fa-spin"></i>
             </span>
       </div>
     </div>
