@@ -40,13 +40,18 @@
   margin-bottom: 8px;
 }
 
-@media (min-width: 640px) {
+.scroll-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (min-width: 720px) {
   .ranks {
     column-count: 2;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1264px) {
   .ranks {
     column-count: 3;
   }

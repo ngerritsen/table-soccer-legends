@@ -18,3 +18,6 @@ export default [
   { name: 'Supreme Master First Class', icon: 'img/smfc.jpg' },
   { name: 'Global Elite', icon: 'img/ge.jpg' }
 ];
+
+export const STEP_SIZE = 25;
+export const MIN_RATING = 1850;

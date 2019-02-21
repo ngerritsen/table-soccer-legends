@@ -80,34 +80,37 @@
 
             <div class="column is-7">
               <h2 class="title is-size-4">Rankings</h2>
-              <table class="table is-fullwidth is-striped">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Player</th>
-                    <th>Rank</th>
-                    <th>Elo</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(playerWithStats, index) in playersWithStats">
-                    <td><strong>{{ index + 1 }}.</strong></td>
-                    <td>{{ playerWithStats.name }}</td>
-                    <td>
-                      <img
-                        class="rank-icon"
-                        :src="ranks[playerWithStats.rank].icon"
-                        :alt="ranks[playerWithStats.rank].name"
-                      >
-                    </td>
-                    <td>{{ playerWithStats.rating }}</td>
-                    <td>{{ playerWithStats.wins }}</td>
-                    <td>{{ playerWithStats.losses }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="scroll-container">
+                <table class="table is-fullwidth is-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Player</th>
+                      <th>Rank</th>
+                      <th>Elo</th>
+                      <th>Wins</th>
+                      <th>Losses</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(playerWithStats, index) in playersWithStats">
+                      <td><strong>{{ index + 1 }}.</strong></td>
+                      <td>{{ playerWithStats.name }}</td>
+                      <td>
+                        <img
+                          class="rank-icon"
+                          :src="ranks[playerWithStats.rank].icon"
+                          :alt="ranks[playerWithStats.rank].name"
+                          :title="ranks[playerWithStats.rank].name"
+                        >
+                      </td>
+                      <td>{{ playerWithStats.rating }}</td>
+                      <td>{{ playerWithStats.wins }}</td>
+                      <td>{{ playerWithStats.losses }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -117,24 +120,26 @@
         <div class="container">
           <h2 class="title is-size-4">Match history</h2>
 
-          <table class="table is-striped is-fullwidth">
-            <thead>
-              <tr>
-                <th v-for="teamId in [0, 1]">Team {{ teamId + 1 }}</th>
-                <th>Result</th>
-                <th v-for="round in [0, 1, 2]">Round {{ round + 1 }}</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="match in matchHistory">
-                <td v-for="teamId in [0, 1]">{{ match.teams[teamId].join(', ') }}</td>
-                <td><strong>{{ match.result.join(' - ') }}</strong></td>
-                <td v-for="round in [0, 1, 2]">{{ (match.rounds[round] || []).join(' - ') }}</td>
-                <td><i>{{ match.date.toLocaleString() }}</i></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="scroll-container">
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th v-for="teamId in [0, 1]">Team {{ teamId + 1 }}</th>
+                  <th>Result</th>
+                  <th v-for="round in [0, 1, 2]">Round {{ round + 1 }}</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="match in matchHistory">
+                  <td v-for="teamId in [0, 1]">{{ match.teams[teamId].join(', ') }}</td>
+                  <td><strong>{{ match.result.join(' - ') }}</strong></td>
+                  <td v-for="round in [0, 1, 2]">{{ (match.rounds[round] || []).join(' - ') }}</td>
+                  <td><i>{{ match.date.toLocaleDateString() }}</i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -144,7 +149,8 @@
           <div class="box">
             <div class="ranks">
               <div class="rank" v-for="rank in ranks">
-                <img class="rank-icon rank-icon--inline" :src="rank.icon" :alt="rank.name"> {{ rank.name }}
+                <img class="rank-icon rank-icon--inline" :src="rank.icon" :alt="rank.name">
+                {{ rank.name }} <small class="has-text-grey is-size-7">({{ rank.from }} - {{ rank.to }})</small>
               </div>
             </div>
           </div>

@@ -5,8 +5,8 @@ import * as playersRepository from './repositories/players';
 import * as matchesRepository from './repositories/matches';
 import { getMatchHistory, parseMatchInput } from './utils/match';
 import { getPlayersWithStats } from './utils/stats';
-import ranks from './ranks';
 import { validateMatch } from './validation';
+import { getRanksWithRatings } from './utils/rank';
 
 new Vue({
   el: '#app',
@@ -20,7 +20,7 @@ new Vue({
       teams: { 0: [], 1: [] },
       rounds: { 0: [], 1: [], 2: [] }
     },
-    ranks
+    ranks: getRanksWithRatings()
   },
   created() {
     this.loadMatches();

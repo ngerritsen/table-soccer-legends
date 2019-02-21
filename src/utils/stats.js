@@ -3,6 +3,8 @@ import { getNewRating } from './elo';
 import { getRank } from './rank';
 import { getPlayersWithIds, updatePlayer } from './players';
 
+import { START_RATING } from '../constants/rating';
+
 export function getPlayersWithStats(matches, players) {
   return matches
     .reduce((playersWithStats, match) => {
@@ -94,6 +96,6 @@ function decoratePlayersWithStats(players) {
     ...player,
     wins: 0,
     losses: 0,
-    rating: 2000
+    rating: START_RATING
   }));
 }
