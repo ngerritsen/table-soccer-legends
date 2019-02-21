@@ -2,6 +2,7 @@ import { getResult } from './match';
 import { getNewRating } from './elo';
 import { getRank } from './rank';
 import { getPlayersWithIds, updatePlayer } from './players';
+import { getSortByFunc } from './general';
 
 import { START_RATING } from '../constants/rating';
 
@@ -37,8 +38,7 @@ export function getPlayersWithStats(matches, players) {
       ...player,
       rank: getRank(player.rating)
     }))
-    .slice()
-    .sort((a, b) => a.rating < b.rating);
+    .sort(getSortByFunc('rating'));
 }
 
 function getRelativeResult(result) {

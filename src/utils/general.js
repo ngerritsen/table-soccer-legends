@@ -18,3 +18,17 @@ export function flattenArray(array) {
 export function unique(array) {
   return Array.from(new Set(array));
 }
+
+export function getSortByFunc(prop) {
+  return (a, b) => {
+    if (a[prop] > b[prop]) {
+      return -1;
+    }
+
+    if (a[prop] < b[prop]) {
+      return 1;
+    }
+
+    return 0;
+  };
+}
