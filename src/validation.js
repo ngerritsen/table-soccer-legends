@@ -13,3 +13,17 @@ export function validateMatch(match) {
 
   return errors;
 }
+
+export function validatePlayer(name, players) {
+  const errors = [];
+
+  if (name.length < 3 || name.length > 15) {
+    errors.push('Player name should be between 3 and 15 characters.');
+  }
+
+  if (players.some(player => player.name === name)) {
+    errors.push('Player name already exists');
+  }
+
+  return errors;
+}

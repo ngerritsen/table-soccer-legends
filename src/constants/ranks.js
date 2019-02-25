@@ -1,4 +1,5 @@
 export default [
+  { name: 'Unranked', icon: 'img/unranked.jpg' },
   { name: 'Silver 1', icon: 'img/s1.jpg' },
   { name: 'Silver 2', icon: 'img/s2.jpg' },
   { name: 'Silver 3', icon: 'img/s3.jpg' },

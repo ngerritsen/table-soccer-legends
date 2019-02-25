@@ -36,7 +36,7 @@ export function getPlayersWithStats(matches, players) {
     }, decoratePlayersWithStats(players))
     .map(player => ({
       ...player,
-      rank: getRank(player.rating)
+      rank: getRank(player.rating, player.wins, player.losses)
     }))
     .sort(getSortByFunc('rating'));
 }

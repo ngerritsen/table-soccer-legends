@@ -1,16 +1,16 @@
-import firebase from '../firebase';
+import app from '../firebase';
 import { numericObjectToArray, arrayToNumericObject } from '../utils/general';
 import { getDocsWithIds } from '../utils/firebase';
 
 export function saveMatch(match) {
-  return firebase
+  return app
     .firestore()
     .collection('matches')
     .add(prepareMatchForStorage(match));
 }
 
 export function getMatches() {
-  return firebase
+  return app
     .firestore()
     .collection('matches')
     .orderBy('date', 'desc')
