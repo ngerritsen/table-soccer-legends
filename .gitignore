@@ -1,5 +1,5 @@
 node_modules
-./*.zip
-./*.html
-./*.js
-./*.css
+index.html
+*.zip
+style.css
+icons.js
