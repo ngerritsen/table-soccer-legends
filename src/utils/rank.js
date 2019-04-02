@@ -6,13 +6,19 @@ export function getRank(rating, wins, losses) {
   }
   const rawRank = (rating - MIN_RATING) / STEP_SIZE;
 
-  return Math.round(Math.max(0, Math.min(rawRank, ranks.length - 1))) + 1;
+  return Math.round(Math.max(0, Math.min(rawRank, ranks.length - 1)));
 }
 
 export function getRanksWithRatings() {
-  return ranks.map((rank, index) => ({
-    ...rank,
-    from: MIN_RATING + STEP_SIZE * index,
-    to: MIN_RATING + STEP_SIZE * (index + 1) - 1
-  }));
+  return ranks.map((rank, index) => {
+    if (index === 0) {
+      return rank;
+    }
+
+    return {
+      ...rank,
+      from: MIN_RATING + STEP_SIZE * (index - 1),
+      to: MIN_RATING + STEP_SIZE * (index) - 1
+    }
+  });
 }
