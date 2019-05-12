@@ -18,7 +18,7 @@ export function getRanksWithRatings() {
     return {
       ...rank,
       from: MIN_RATING + STEP_SIZE * (index - 1),
-      to: MIN_RATING + STEP_SIZE * (index) - 1
-    }
+      to: MIN_RATING + STEP_SIZE * index - 1
+    };
   });
 }
