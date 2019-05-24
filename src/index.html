@@ -33,93 +33,76 @@
         <div class="container">
           <div class="columns">
             <div class="column is-5">
-              <div v-show="!loggedIn">
-                <h2 class="title is-size-4">Login</h2>
-                <div class="box">
-                  <div class="content">
-                    <p>Sign in to add Matches.</p>
-                    <br/>
-                    <button class="button" @click="login()">
-                      <span class="icon">
-                        <i class="fab fa-github"></i>
-                      </span>
-                      <span>Sign in with GitHub</span>
-                    </button>
-                  </div>
+              <h2 class="title is-size-4">Add match</h2>
+              <div class="box">
+                <div class="notification is-danger" v-if="matchInput.errors.length > 0">
+                  <ul>
+                    <li v-for="error in matchInput.errors">{{ error }}</li>
+                  </ul>
                 </div>
+                
+                <div class="notification is-success" v-if="matchInput.success.length > 0">
+                  {{ smatchInput.uccess }}
+                </div>
+                
+                <form @submit="saveMatch">
+                  <div v-for="teamId in [0, 1]" class="field">
+                    <label class="label">Team {{ teamId + 1 }}</label>
+                    <div class="field is-grouped">
+                      <div class="control is-expanded" v-for="playerSlot in [0, 1]">
+                        <div class="select is-fullwidth">
+                          <select v-model="matchInput.teams[teamId][playerSlot]">
+                            <option>-</option>
+                            <option v-for="player in players" :value="player.id">{{ player.name }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Rounds <small class="has-text-grey">(team 1 - team 2)</small></label>
+                    <div class="field is-grouped" v-for="round in [0, 1, 2]">
+                      <div class="control is-expanded" v-for="teamId in [0, 1]">
+                        <input class="input is-fullwidth" v-model="matchInput.rounds[round][teamId]" type="number"/>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="field">
+                    <div class="control">
+                      <button type="submit" class="button is-info">Save</button>
+                    </div>
+                  </div>
+                </form>
               </div>
-              <div v-show="loggedIn">
-                <h2 class="title is-size-4">Add match</h2>
-                <div class="box">
-                  <div class="notification is-danger" v-if="matchInput.errors.length > 0">
-                    <ul>
-                      <li v-for="error in matchInput.errors">{{ error }}</li>
-                    </ul>
-                  </div>
-                  
-                  <div class="notification is-success" v-if="matchInput.success.length > 0">
-                    {{ smatchInput.uccess }}
-                  </div>
-                  
-                  <form @submit="saveMatch">
-                    <div v-for="teamId in [0, 1]" class="field">
-                      <label class="label">Team {{ teamId + 1 }}</label>
-                      <div class="field is-grouped">
-                        <div class="control is-expanded" v-for="playerSlot in [0, 1]">
-                          <div class="select is-fullwidth">
-                            <select v-model="matchInput.teams[teamId][playerSlot]">
-                              <option>-</option>
-                              <option v-for="player in players" :value="player.id">{{ player.name }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div class="field">
-                      <label class="label">Rounds <small class="has-text-grey">(team 1 - team 2)</small></label>
-                      <div class="field is-grouped" v-for="round in [0, 1, 2]">
-                        <div class="control is-expanded" v-for="teamId in [0, 1]">
-                          <input class="input is-fullwidth" v-model="matchInput.rounds[round][teamId]" type="number"/>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="field">
-                      <div class="control">
-                        <button type="submit" class="button is-info">Save</button>
-                      </div>
-                    </div>
-                  </form>
+              <h2 class="title is-size-4">Add player</h2>
+              <div class="box">
+                <div class="notification is-danger" v-if="playerInput.errors.length > 0">
+                  <ul>
+                    <li v-for="error in playerInput.errors">{{ error }}</li>
+                  </ul>
                 </div>
-
-                <h2 class="title is-size-4">Add player</h2>
-                <div class="box">
-                  <div class="notification is-danger" v-if="playerInput.errors.length > 0">
-                    <ul>
-                      <li v-for="error in playerInput.errors">{{ error }}</li>
-                    </ul>
+                
+                <div class="notification is-success" v-if="playerInput.success.length > 0">
+                  {{ playerInput.success }}
+                </div>
+                
+                <form @submit="savePlayer">
+                  <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                      <input class="input is-fullwidth" type="text" v-model="playerInput.name">
+                    </div>
                   </div>
                   
-                  <div class="notification is-success" v-if="playerInput.success.length > 0">
-                    {{ playerInput.success }}
+                  <div class="field">
+                    <div class="control">
+                      <button type="submit" class="button is-info">Save</button>
+                    </div>
                   </div>
-                  
-                  <form @submit="savePlayer">
-                    <div class="field">
-                      <label class="label">Name</label>
-                      <div class="control">
-                        <input class="input is-fullwidth" type="text" v-model="playerInput.name">
-                      </div>
-                    </div>
-                    
-                    <div class="field">
-                      <div class="control">
-                        <button type="submit" class="button is-info">Save</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+                </form>
               </div>
             </div>
             

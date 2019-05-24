@@ -7,7 +7,6 @@ import './style.scss';
 
 import * as playersRepository from './repositories/players';
 import * as matchesRepository from './repositories/matches';
-import { login, getLoggedInUser } from './authentication';
 import { getMatchHistory, parseMatchInput } from './utils/match';
 import { getPlayersWithStats } from './utils/stats';
 import { validateMatch, validatePlayer } from './validation';
@@ -18,7 +17,6 @@ new Vue({
   data: {
     players: [],
     loading: true,
-    loggedIn: false,
     matches: [],
     playerInput: {
       success: '',
@@ -35,9 +33,6 @@ new Vue({
   },
   created() {
     this.loadMatches();
-    getLoggedInUser().then(user => {
-      this.loggedIn = Boolean(user);
-    });
   },
   methods: {
     loadMatches() {
@@ -51,9 +46,6 @@ new Vue({
           this.loading = false;
         })
         .catch(error => console.error(error));
-    },
-    login() {
-      login();
     },
     savePlayer(event) {
       event.preventDefault();
