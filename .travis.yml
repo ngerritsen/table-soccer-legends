@@ -4,6 +4,11 @@ node_js:
 build:
   - npm run test
   - npm run build
+deploy:
+  provider: firebase
+  skip_cleanup: true
+  api_key:
+    secure: $FIREBASE_TOKEN
 after_success:
   - zip table-soccer-legends.zip index.html *.js *.jpg
   - "curl -F 'data=@table-soccer-legends.zip' -H 'X-Key: '$DEPLOY_KEY -H 'X-ExtractTo: nielsgerritsen/table-soccer-legends' https://carehr.nl/deploy/"

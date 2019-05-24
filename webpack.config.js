@@ -1,3 +1,4 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -7,8 +8,8 @@ module.exports = {
     icons: './src/icons.js'
   },
   output: {
-    path: __dirname,
-    filename: '[name].js'
+    path: path.join(__dirname, 'public'),
+    filename: '[name].[chunkHash].js'
   },
   module: {
     rules: [
@@ -33,8 +34,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      hash: true
+      template: './src/index.html'
     }),
     new ExtractTextPlugin('style.css')
   ]
